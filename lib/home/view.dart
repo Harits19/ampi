@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:ampi/battery/service.dart';
+import 'package:ampi/home/model.dart';
 import 'package:ampi/line-chart/model.dart';
 import 'package:ampi/line-chart/view.dart';
 import 'package:flutter/material.dart';
@@ -11,9 +14,11 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  final historyAmp = <int>[];
+  final historyAmp = <HistoryAmpereModel>[];
 
   final BatteryService batteryService = BatteryService();
+
+  final double milliAmp = 1000;
 
   @override
   void initState() {
@@ -21,7 +26,12 @@ class _HomeViewState extends State<HomeView> {
     batteryService.startMonitoring(
       onChangeAmp: (value) {
         setState(() {
-          historyAmp.add(value);
+          historyAmp.add(
+            HistoryAmpereModel(
+              value: Random().nextInt(900) * milliAmp,
+              time: DateTime.now(),
+            ),
+          );
         });
       },
     );
@@ -35,8 +45,7 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    double currentInMilliAmps = (historyAmp.lastOrNull ?? 0) / 1000;
-    final data = [100, 222, 123, 233, 211, 10];
+    double currentInMilliAmps = (historyAmp.lastOrNull?.value ?? 0) / milliAmp;
     return Scaffold(
       appBar: AppBar(title: Text("Battery Current Draw")),
       body: Column(
@@ -45,8 +54,13 @@ class _HomeViewState extends State<HomeView> {
             'Current Now: ${currentInMilliAmps.toStringAsFixed(2)} mA',
             style: TextStyle(fontSize: 24),
           ),
-
-          LineChartView(data: data, yValue: (value) => value.toDouble()),
+          SizedBox(height: 16),
+          LineChartView(
+            data: historyAmp,
+            yValue: (item) => item.value.toDouble(),
+            xString: (item) => item.time.second.toString(),
+            yString: (item) => (item.value / milliAmp).toStringAsFixed(2),
+          ),
         ],
       ),
     );
