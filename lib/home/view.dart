@@ -48,20 +48,28 @@ class _HomeViewState extends State<HomeView> {
     double currentInMilliAmps = (historyAmp.lastOrNull?.value ?? 0) / milliAmp;
     return Scaffold(
       appBar: AppBar(title: Text("Battery Current Draw")),
-      body: Column(
-        children: [
-          Text(
-            'Current Now: ${currentInMilliAmps.toStringAsFixed(2)} mA',
-            style: TextStyle(fontSize: 24),
-          ),
-          SizedBox(height: 16),
-          LineChartView(
-            data: historyAmp,
-            yValue: (item) => item.value.toDouble(),
-            xString: (item) => item.time.second.toString(),
-            yString: (item) => (item.value / milliAmp).toStringAsFixed(2),
-          ),
-        ],
+      body: Padding(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Card(
+              child: Text(
+                'Current Now: ${currentInMilliAmps.toStringAsFixed(2)} mA',
+                style: TextStyle(fontSize: 24),
+              ),
+            ),
+            SizedBox(height: 16),
+            Card(
+              child: LineChartView(
+                data: historyAmp,
+                yValue: (item) => item.value.toDouble(),
+                xString: (item) => item.time.second.toString(),
+                yString: (item) => (item.value / milliAmp).toStringAsFixed(2),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

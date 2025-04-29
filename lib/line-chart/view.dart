@@ -21,7 +21,7 @@ class LineChartView<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     const marginY = 0.1;
     const heightChart = 400;
-    const heightText = 150;
+    const heightText = 24;
     const totalHeight = heightText + heightChart;
     final reverseData = data.reversed.toList();
     final width = 32 * data.length;
