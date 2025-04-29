@@ -2,19 +2,22 @@ import 'package:ampi/line-chart/model.dart';
 import 'package:flutter/material.dart';
 
 class LineChartView<T> extends StatelessWidget {
-  const LineChartView({super.key, required this.data});
+  const LineChartView({super.key, required this.data, required this.yValue,});
 
   final List<T> data;
 
+  final double Function(T value) yValue;
+
   @override
   Widget build(BuildContext context) {
+    const marginY = 0.1;
     return SizedBox(
       width: double.infinity,
       height: 400,
       child: CustomPaint(
         painter: LineChartPainter(
           data.asMap().entries.map((item) {
-            return Offset(item.key.toDouble(), 123);
+            return Offset(item.key.toDouble(), yValue(item.value) + marginY);
           }).toList(),
         ),
       ),

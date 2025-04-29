@@ -36,16 +36,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     double currentInMilliAmps = (historyAmp.lastOrNull ?? 0) / 1000;
-    final data = [
-      Chart(x: 0, y: 100),
-      Chart(x: 1, y: 1),
-      Chart(x: 2, y: 2),
-      Chart(x: 3, y: 33),
-      Chart(x: 4, y: 444),
-      Chart(x: 5, y: 110),
-      Chart(x: 6, y: 32),
-      Chart(x: 7, y: 212),
-    ];
+    final data = [100, 222, 123, 233, 211, 10];
     return Scaffold(
       appBar: AppBar(title: Text("Battery Current Draw")),
       body: Column(
@@ -55,7 +46,7 @@ class _HomeViewState extends State<HomeView> {
             style: TextStyle(fontSize: 24),
           ),
 
-          LineChartView(data: data),
+          LineChartView(data: data, yValue: (value) => value.toDouble()),
         ],
       ),
     );
